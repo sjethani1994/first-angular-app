@@ -6,13 +6,12 @@ import {
   computed,
   signal,
 } from '@angular/core';
-import { CurrentUserComponent } from './current-user/current-user.component';
 import { TasksComponent } from "../tasks/tasks.component";
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, CurrentUserComponent, TasksComponent],
+  imports: [CommonModule, TasksComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
