@@ -10,13 +10,13 @@ import { DUMMY_TASKS } from '../pages/tasks/dummy-tasks';
 export class MasterService {
   constructor(private http: HttpClient) {}
 
-  private userId = new BehaviorSubject<number | null>(null);
+  private user = new BehaviorSubject<any | null>(null);
 
   // Observable to expose the userId as a stream
-  public userId$ = this.userId.asObservable();
+  public user$ = this.user.asObservable();
 
-  public updateUserId(id: number | null): void {
-    this.userId.next(id);
+  public updateUser(user: any | null): void {
+    this.user.next(user);
   }
 
   getUsers() {

@@ -12,15 +12,6 @@ import { MasterService } from '../../services/master.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   public componentsToLoad: any = [UserComponent];
-  public showTask: number | null = null; // This now represents the user ID or null
-
-  private masterService = inject(MasterService);
-
-  ngOnInit(): void {
-    this.masterService.userId$.subscribe((id) => {
-      this.showTask = id;
-    });
-  }
 }

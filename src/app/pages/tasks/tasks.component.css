@@ -2,6 +2,9 @@ article {
   padding: 1rem;
   color: #25113d;
   background-color: #bf9ee5;
+  border: 2px solid #bf9ee5; /* Border to define the box */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
 }
 
 h2 {

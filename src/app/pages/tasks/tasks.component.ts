@@ -16,21 +16,21 @@ import { MasterService } from '../../services/master.service';
 })
 export class TasksComponent implements OnInit {
   masterService = inject(MasterService);
-  public userId: string | any = null;
+  public user: string | any = null;
   public tasks: any[] = [];
 
   ngOnInit(): void {
-    this.masterService.userId$.subscribe((id) => {
-      this.userId = id; // Store the emitted userId
+    this.masterService.user$.subscribe((user) => {
+      this.user = user; // Store the emitted userId
       this.filterTask(); // Call the filterTask method when userId changes
     });
   }
 
   public filterTask(): void {
-    if (this.userId !== null) {
+    if (this.user !== null) {
       this.tasks = this.masterService
         .getTasks()
-        .filter((task) => task.userId === this.userId);
+        .filter((task) => task.userId === this.user.id);
     } else {
       this.tasks = []; // Optionally, clear tasks if userId is null
     }

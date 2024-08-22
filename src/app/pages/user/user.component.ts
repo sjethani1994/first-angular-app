@@ -7,11 +7,12 @@ import {
   signal,
 } from '@angular/core';
 import { CurrentUserComponent } from './current-user/current-user.component';
+import { TasksComponent } from "../tasks/tasks.component";
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, CurrentUserComponent],
+  imports: [CommonModule, CurrentUserComponent, TasksComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +34,7 @@ export class UserComponent {
       avatar: computed(() => 'assets/' + currentItem.avatar),
     });
 
-    this.masterService.updateUserId(currentItem.id);
+    this.masterService.updateUser(currentItem);
   }
 
   public get imagePath(): string {
