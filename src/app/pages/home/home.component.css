@@ -1,0 +1,15 @@
+.container-fluid {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: space-around;
+    align-items: baseline;
+}
+
+.main {
+    flex: 1;
+}
+
+.tasks {
+    flex: 0.6;
+}

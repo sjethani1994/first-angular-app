@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row">
+    @if (tasks.length !== 0) { @for (task of tasks; track task.id) {
+    <div class="col-8">
+      <article class="mb-2">
+        <h2>{{ task.title }}</h2>
+        <time>{{ task.dueDate }}</time>
+        <p>{{ task.summary }}</p>
+        <p class="actions">
+          <button>Complete</button>
+        </p>
+      </article>
+    </div>
+    } } @else {
+    <div class="col-12">
+      <p>No tasks available.</p>
+    </div>
+
+    }
+
+    <!-- <ng-container *ngIf="tasks.length !== 0; else noTasksTemplate">
+      <div class="col-8" *ngFor="let task of tasks">
+        <article class="mb-2">
+          <h2>{{ task.title }}</h2>
+          <time>{{ task.dueDate }}</time>
+          <p>{{ task.summary }}</p>
+          <p class="actions">
+            <button>Complete</button>
+          </p>
+        </article>
+      </div>
+    </ng-container> -->
+
+    <!-- Template to display when tasks array is empty -->
+    <!-- <ng-template #noTasksTemplate>
+      <div class="col-12">
+        <p>No tasks available.</p>
+      </div>
+    </ng-template> -->
+  </div>
+</div>

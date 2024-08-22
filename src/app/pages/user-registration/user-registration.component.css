@@ -1,0 +1,16 @@
+form {
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    color: black;
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+.errorMessage {
+    color: #d26024;
+    font-size: 14px;
+    font-weight: 500;
+}
