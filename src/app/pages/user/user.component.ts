@@ -7,11 +7,12 @@ import {
   signal,
 } from '@angular/core';
 import { TasksComponent } from "../tasks/tasks.component";
+import { CardComponent } from "../../shared/card/card.component";
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, TasksComponent],
+  imports: [CommonModule, TasksComponent, CardComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

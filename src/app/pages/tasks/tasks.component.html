@@ -1,14 +1,21 @@
 <div class="container">
-  <h3>{{ user.name }}'s Tasks</h3>
+  <div class="row mb-3">
+    <div class="col-8">
+      <h4>{{ user.name }}'s Tasks</h4>
+    </div>
+    <div class="col-4">
+      <button class="menu-button" (click)="addTask()">Add Task</button>
+    </div>
+  </div>
   <div class="row">
     @if (tasks.length !== 0) { @for (task of tasks; track task.id) {
-    <div class="col-lg-10">
+    <div class="col-12">
       <article class="mb-2">
         <h5>{{ task.title }}</h5>
-        <time>{{ task.dueDate }}</time>
+        <time>{{ task.dueDate | date: 'fullDate' }}</time>
         <p>{{ task.summary }}</p>
         <p class="actions">
-          <button>Complete</button>
+          <button (click)="completeTask(task)">Complete</button>
         </p>
       </article>
     </div>
@@ -18,25 +25,9 @@
     </div>
 
     }
-
-    <!-- <ng-container *ngIf="tasks.length !== 0; else noTasksTemplate">
-      <div class="col-8" *ngFor="let task of tasks">
-        <article class="mb-2">
-          <h2>{{ task.title }}</h2>
-          <time>{{ task.dueDate }}</time>
-          <p>{{ task.summary }}</p>
-          <p class="actions">
-            <button>Complete</button>
-          </p>
-        </article>
-      </div>
-    </ng-container> -->
-
-    <!-- Template to display when tasks array is empty -->
-    <!-- <ng-template #noTasksTemplate>
-      <div class="col-12">
-        <p>No tasks available.</p>
-      </div>
-    </ng-template> -->
   </div>
+
+  @if (isAddTask) {
+  <app-new-task (cancel)="onCancel()" (add)="onAddTask($event)"></app-new-task>
+  }
 </div>
