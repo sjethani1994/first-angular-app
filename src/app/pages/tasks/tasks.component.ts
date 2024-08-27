@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MasterService } from '../../services/master.service';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { type NewTaskData } from './task.model';
-import { CardComponent } from "../../shared/card/card.component";
+import { CardComponent } from '../../shared/card/card.component';
 
 @Component({
   selector: 'app-tasks',
@@ -21,15 +21,15 @@ export class TasksComponent implements OnInit {
   ngOnInit(): void {
     this.masterService.user$.subscribe((user) => {
       this.user = user; // Store the emitted userId
-      this.filterTask(); // Call the filterTask method when userId changes
+      this.loadTasks(); // Call the loadTasks method when userId changes
     });
   }
 
-  public filterTask(): void {
+  public loadTasks(): void {
     if (this.user !== null) {
-      this.tasks = this.masterService
-        .getTasks()
-        .filter((task) => task.userId === this.user.id);
+      this.masterService.getTasks().subscribe((tasks) => {
+        this.tasks = tasks.filter((task) => task.userId === this.user?.id);
+      });
       this.isAddTask = false;
     } else {
       this.tasks = []; // Optionally, clear tasks if userId is null
@@ -37,29 +37,15 @@ export class TasksComponent implements OnInit {
   }
 
   public completeTask(currentTask: any): void {
-    if (this.tasks.length > 1) {
-      this.tasks = this.tasks.filter((task) => task.id !== currentTask.id);
-    } else {
-      this.tasks = [];
-    }
+    this.masterService.completeTask(currentTask.id);
+    this.loadTasks(); // Reload tasks after completing one
   }
 
   public addTask() {
     this.isAddTask = true;
   }
 
-  onCancel(): void {
-    this.isAddTask = false;
-  }
-
-  onAddTask(task: NewTaskData) {
-    this.tasks.unshift({
-      id: new Date().getTime().toString(),
-      userId: this.user.id,
-      title: task.title,
-      summary: task.summary,
-      date: task.date,
-    });
+  onCloseDialog(): void {
     this.isAddTask = false;
   }
 }

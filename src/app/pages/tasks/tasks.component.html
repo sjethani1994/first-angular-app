@@ -12,7 +12,7 @@
     <div class="col-12">
       <article class="mb-2">
         <h5>{{ task.title }}</h5>
-        <time>{{ task.dueDate | date: 'fullDate' }}</time>
+        <time>{{ task.dueDate | date : "fullDate" }}</time>
         <p>{{ task.summary }}</p>
         <p class="actions">
           <button (click)="completeTask(task)">Complete</button>
@@ -28,6 +28,6 @@
   </div>
 
   @if (isAddTask) {
-  <app-new-task (cancel)="onCancel()" (add)="onAddTask($event)"></app-new-task>
+  <app-new-task (closeDialog)="onCloseDialog()"></app-new-task>
   }
 </div>
