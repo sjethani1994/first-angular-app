@@ -42,20 +42,6 @@ export class MasterService {
     );
   }
 
-  // Method to fetch pin code details for a given city using an API.
-  public getPinCode(city: string): Observable<any> {
-    const url = `https://api.postalpincode.in/postoffice/${city}`;
-    return this.http.get(url).pipe(
-      map((response: any) => response[0].PostOffice), // Extract the PostOffice data from the API response
-      map((postOffices: any[]) =>
-        postOffices.find(
-          (postOffice) =>
-            postOffice.District.toLowerCase() === city.toLowerCase() // Find the post office in the specified district
-        )
-      )
-    );
-  }
-
   // Method to remove a task by its ID.
   public completeTask(taskId: string): void {
     const updatedTasks = this.tasks.value.map((task) =>
