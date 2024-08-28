@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { DUMMY_USERS } from '../pages/user/dummy_users';
-import { DUMMY_TASKS } from '../pages/tasks/dummy-tasks';
 import { NewTaskData } from '../pages/tasks/task.model';
 
 @Injectable({
@@ -13,9 +12,15 @@ export class MasterService {
   private user = new BehaviorSubject<any | null>(null);
 
   // Initialize the BehaviorSubject to hold the tasks, starting with dummy data.
-  private tasks = new BehaviorSubject<any[]>(DUMMY_TASKS);
+  private tasks = new BehaviorSubject<any[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const storedTasks = localStorage.getItem('tasks');
+    if (storedTasks) {
+      console.log(storedTasks);
+      this.tasks.next(JSON.parse(storedTasks));
+    }
+  }
 
   // Observable to expose the user as a stream.
   public user$ = this.user.asObservable();
@@ -32,7 +37,9 @@ export class MasterService {
 
   // Method to get the tasks as an observable.
   public getTasks(): Observable<any[]> {
-    return this.tasks.asObservable();
+    return this.tasks.asObservable().pipe(
+      map((tasks) => tasks.filter((task) => !task.isCompleted)) // Filter out completed tasks
+    );
   }
 
   // Method to fetch pin code details for a given city using an API.
@@ -51,22 +58,29 @@ export class MasterService {
 
   // Method to remove a task by its ID.
   public completeTask(taskId: string): void {
-    const updatedTasks = this.tasks.value.filter((task) => task.id !== taskId);
-    this.tasks.next(updatedTasks); // Update the tasks BehaviorSubject with the filtered tasks.
+    const updatedTasks = this.tasks.value.map((task) =>
+      task.id === taskId ? { ...task, isCompleted: true } : task
+    );
+    this.tasks.next(updatedTasks);
+    this.saveTasks(); // Save updated tasks to localStorage
   }
 
   // Method to add a new task to the task list.
   public addTask(task: NewTaskData): void {
-    const updatedTasks = [
-      ...this.tasks.value, // Spread the existing tasks
-      {
-        id: new Date().getTime().toString(), // Generate a unique ID based on the current timestamp
-        userId: this.user.value?.id, // Assign the current user's ID to the new task
-        title: task.title,
-        summary: task.summary,
-        date: task.date,
-      },
-    ];
-    this.tasks.next(updatedTasks); // Update the tasks BehaviorSubject with the new task list.
+    const newTask = {
+      id: new Date().getTime().toString(),
+      userId: this.user.value?.id,
+      title: task.title,
+      summary: task.summary,
+      dueDate: task.date,
+      isCompleted: false, // Default to false when adding a new task
+    };
+    const updatedTasks = [...this.tasks.value, newTask];
+    this.tasks.next(updatedTasks);
+    this.saveTasks(); // Save updated tasks to localStorage
+  }
+
+  private saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(this.tasks.value));
   }
 }
